@@ -1,8 +1,6 @@
 package com.example.htmltoapk.ui.screens
 
 import androidx.compose.foundation.background
-import androidx.compose.foundation.clickable
-import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
@@ -164,9 +162,9 @@ private fun androidx.compose.foundation.lazy.LazyListScope.renderFolder(
 
 @Composable
 private fun Modifier.clickableToggle(onClick: () -> Unit): Modifier {
-    val interactionSource = remember { MutableInteractionSource() }
+    val interactionSource = remember { androidx.compose.foundation.interaction.MutableInteractionSource() }
     return this.then(
-        clickable(
+        androidx.compose.foundation.clickable(
             interactionSource = interactionSource,
             indication = null,
             onClick = onClick
