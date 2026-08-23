@@ -11,6 +11,8 @@ import androidx.compose.animation.core.tween
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
+import androidx.compose.foundation.clickable
+import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
@@ -148,9 +150,9 @@ private fun TemplateCard(name: String, onClick: () -> Unit) {
 /** Small helper to avoid pulling in the indication/interactionSource boilerplate inline above. */
 @Composable
 private fun Modifier.clickableNoRipple(onClick: () -> Unit): Modifier {
-    val interactionSource = remember { androidx.compose.foundation.interaction.MutableInteractionSource() }
+    val interactionSource = remember { MutableInteractionSource() }
     return this.then(
-        androidx.compose.foundation.clickable(
+        clickable(
             interactionSource = interactionSource,
             indication = null,
             onClick = onClick
