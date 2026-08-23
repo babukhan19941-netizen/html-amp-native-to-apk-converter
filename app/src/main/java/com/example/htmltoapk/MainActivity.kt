@@ -20,6 +20,7 @@ import com.example.htmltoapk.ui.screens.*
 import com.example.htmltoapk.ui.theme.HtmlToApkTheme
 import java.io.File
 
+@OptIn(ExperimentalMaterial3Api::class)
 class MainActivity : ComponentActivity() {
 
     private val viewModel: AppViewModel by viewModels()
