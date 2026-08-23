@@ -239,8 +239,6 @@ class AndroidProjectGenerator {
                                                 message: String?,
                                                 result: JsResult?
                                             ): Boolean {
-                                                // Forwarded to the floating console log in the builder app;
-                                                // in the exported standalone app this simply confirms.
                                                 result?.confirm()
                                                 return true
                                             }
@@ -280,7 +278,9 @@ class AndroidProjectGenerator {
         </resources>
     """.trimIndent() + "\n"
 
-    /** Minimal adaptive icon set (vector vector-drawable based, no PNG rasterization needed). */
+    /**
+     * Minimal adaptive icon set (vector vector-drawable based, no PNG rasterization needed).
+     */
     private fun adaptiveIcons(cfg: ProjectConfig): List<ProjectFile> {
         val fg = """
             <vector xmlns:android="http://schemas.android.com/apk/res/android"
