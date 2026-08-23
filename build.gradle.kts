@@ -1,10 +1,5 @@
-// Top-level build file
+// Top-level build file for Android Project
 plugins {
-    id("com.android.application") version "8.9.2" apply false
-    id("org.jetbrains.kotlin.android") version "2.0.20" apply false
-    id("org.jetbrains.kotlin.plugin.compose") version "2.0.20" apply false
-}
-
-tasks.register("clean", Delete::class) {
-    delete(rootProject.layout.buildDirectory)
+    id("com.android.application") version "8.9.0" apply false
+    id("org.jetbrains.kotlin.android") version "2.1.10" apply false
 }

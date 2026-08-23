@@ -1,4 +1,4 @@
-name: Build Native Android APK
+name: Build Android APK
 
 on:
   push:
@@ -9,9 +9,12 @@ concurrency:
   group: ${{ github.workflow }}-${{ github.ref }}
   cancel-in-progress: true
 
+permissions:
+  contents: write
+
 jobs:
   build:
-    name: Build Android APK with Gradle
+    name: Build Android APK
     runs-on: ubuntu-latest
 
     steps:
@@ -23,45 +26,35 @@ jobs:
         with:
           java-version: '17'
           distribution: 'temurin'
-          cache: gradle
 
-      - name: Setup Gradle
-        uses: gradle/actions/setup-gradle@v3
+      - name: Setup Gradle 9.3.1
+        uses: gradle/actions/setup-gradle@v4
         with:
           gradle-version: '9.3.1'
 
-      - name: Prepare Secrets & Environment
-        run: |
-          if [ ! -f ".env" ]; then
-            if [ -f ".env.example" ]; then
-              cp .env.example .env
-            else
-              touch .env
-            fi
-          fi
-
-      - name: Prepare Debug Keystore
+      - name: Generate Android Debug Keystore
         run: |
           mkdir -p ~/.android
           keytool -genkeypair -alias androiddebugkey -keypass android -keystore ~/.android/debug.keystore -storepass android -dname "CN=Android Debug,O=Android,C=US" -validity 10000 -keyalg RSA -keysize 2048
 
-      - name: Prepare Gradle Wrapper
-        run: |
-          if [ ! -f "gradlew" ]; then
-            gradle wrapper --gradle-version 9.3.1
-          fi
-          chmod +x ./gradlew || chmod +x gradlew
-
       - name: Build Debug APK
-        run: |
-          ./gradlew assembleDebug --stacktrace --no-daemon || gradle assembleDebug --stacktrace --no-daemon || ./gradlew build --stacktrace --no-daemon
+        run: gradle assembleDebug --stacktrace --no-daemon
+
+      - name: Build Release APK
+        run: gradle assembleRelease --stacktrace --no-daemon || gradle assembleDebug
 
       - name: Upload Debug APK Artifact
         uses: actions/upload-artifact@v4
         if: always()
         with:
-          name: native-android-apk
-          path: |
-            **/build/outputs/apk/**/*.apk
-            **/build/outputs/bundle/**/*.aab
-          retention-days: 14
+          name: HTML--amp--Native-to-APK-Converter-debug-apk
+          path: app/build/outputs/apk/debug/*.apk
+          retention-days: 30
+
+      - name: Upload Release APK Artifact
+        uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: HTML--amp--Native-to-APK-Converter-release-apk
+          path: app/build/outputs/apk/release/*.apk
+          retention-days: 30
